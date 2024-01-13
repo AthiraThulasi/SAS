@@ -1,0 +1,213 @@
+*Q1. You have a text file called Scores.txt containing information on gender (M or F) and four test
+scores (English, history, math, and science). Each data value is separated from the others by one or
+more blanks. Here is a listing of the data file Scores.txt:
+M 80 82 85 88
+F 94 92 88 96
+M 96 88 89 92
+F 95 . 92 92
+
+a. Write a DATA step to read in these values. Choose your own variable names. Be sure that the
+value for Gender is stored in 1 byte and that the four test scores are numeric;
+
+*GENDER is the only character variable ($) with length 1;
+
+Data subjects;
+infile'/home/u60674716/Datasets/Roncody_dataset/scores.txt';
+input gender $1
+	  English 
+	  history
+	  math
+	  science;
+run;
+
+*b. Include an assignment statement computing the average of the four test scores;
+*As the 4th row has a missing column, average computed will be missing for the forth column;
+
+Data average;
+set subjects;
+Av = (English + history + math +  science) /4;
+run;
+	  
+*c. Write the appropriate PROC PRINT statements to list the contents of this data set;
+ proc print data = average;
+ run;
+ 
+*###################################################################################
+2. You are given a CSV (comma-separated values) file called Political.csv containing state,
+political party, and age. A listing of the file Political.txt is shown here:
+"NJ",Ind,55
+"CO",Dem,45
+"NY",Rep,23
+"FL",Dem,66
+"NJ",Rep,34
+
+
+a. Write a SAS program to create a temporary SAS data set called Vote. Use the variable names
+State, Party, and Age. Age should be stored as a numeric variable. State and Party should be
+stored as character variables;
+
+Data Vote;
+infile '/home/u60674716/Datasets/Roncody_dataset/vote.txt' dsd ;
+input state $ party $ age;
+run;
+
+*b. Include a procedure to list the observations in this data set;
+
+proc print data = vote;
+run;
+
+*c. Include a procedure to compute frequencies for Party;
+proc freq data = vote ;
+tables party / nocum ;
+run;
+
+*frequency table for the variable party should not include cumulative frequencies
+###############################################################################################;
+*Q3) 3. You are given a text file where dollar signs were used as delimiters. To indicate missing values,
+two dollars signs were entered. Values in this file represent last name, employee number, and
+annual salary.
+Here is a listing of the file Company.txt:
+Roberts$M234$45000
+Chien$M74777$$
+Walters$$75000
+Rogers$F7272$78131
+Using this data file as input, create a temporary SAS data set called Company with the variables
+LastName (character), EmpNo (character), and Salary (numeric)
+
+Here dsd will convert the default delimiter (blank) to $
+And dlm = $ specifies the delimiter used in the code;
+
+Data company;
+infile'/home/u60674716/Datasets/Roncody_dataset/company.txt' dsd dlm ='$';
+input last_name  $ employee_number  $ salary;
+run;
+
+title "Listing of COMPANY";
+proc print data=company noobs;
+run;
+
+*##############################################################################
+Q4. Repeat Problem 2 using a FILENAME statement to create a fileref instead of using the file name
+on the INFILE statements;
+
+FILENAME comp '/home/u60674716/Datasets/Roncody_dataset/company.txt' ;
+Data company;
+INFILE comp dsd dlm ='$';
+input last_name  $ employee_number  $ salary;
+run;
+
+*###################################################################################
+Q5. You want to create a program that uses a DATALINES statement to read in values for X and Y. In
+the DATA step, you want to create a new variable, Z, equal to 100 + 50X + 2X2 – 25Y + Y2. Use
+the following (X,Y) data pairs: (1,2), (3,6), (5,9), and (9,11);
+
+Data values;
+infile Datalines;
+input X Y;
+Z = 100 + 50*X + 2*X**2 - 25*Y + Y**2;
+Datalines;
+1 2
+3 6
+5 9
+9 11
+;
+
+*####################################################
+Q6)
+You have a text file called Bankdata.txt with data values arranged as follows:
+Include in this data set a variable called Interest computed by multiplying
+Balance by Rate. List the contents of this data set using PROC PRINT;
+
+Data Bank;
+infile '/home/u60674716/Datasets/Roncody_dataset/bankdata.txt';
+input @1Name $14. Acct $ Interest_rate;
+run;
+
+*The following is the data in text file;
+Philip Jones V1234 4322.32
+Nathan Philips V1399 15202.45
+Shu Lu W8892 451233.45
+Betty Boop V7677 50002.78;
+
+*############################################################
+7. You have a text file called Geocaching.txt with data values arranged as follows
+Create a temporary SAS data set called Cache using this data file. Use column input to read the
+data values.;
+Data Cache;
+infile '/home/u60674716/Datasets/Roncody_dataset/geocache.txt';
+input @1 Name $17. LongDeg 21-22  LongMin 23-28 LatDeg 29-30 LatMin 31-36 ;
+run;
+
+*The following is the data in text file
+Higgensville Hike 4030.2937446.539
+Really Roaring 4027.4047442.147
+Cushetunk Climb 4037.0247448.014
+Uplands Trek 4030.9907452.794
+
+
+*#######################################################################
+8. Repeat Problem 6 using formatted input to read the data values instead of column input;
+
+Data Bank_formatted;
+infile '/home/u60674716/Datasets/Roncody_dataset/bankdata.txt';
+input @1Name $14. @16 Acct $5. @22Interest_rate 6.2;
+run;
+
+*The following is the data in text file;
+Philip Jones V1234 4322.32
+Nathan Philips V1399 15202.45
+Shu Lu W8892 451233.45
+Betty Boop V7677 50002.78;
+
+*##########################################################################################
+9. Repeat Problem 7 using formatted input to read the data values instead of column input;
+
+Data Cache_formatted;
+infile '/home/u60674716/Datasets/Roncody_dataset/geocache.txt';
+input @1 Name $17. 
+@19 LongDeg 2.  
+@21 LongMin 6. 
+@27 LatDeg 2. 
+@30 LatMin 6. ;
+run;
+
+*The following is the data in text file
+Higgensville Hike 4030.2937446.539
+Really Roaring 4027.4047442.147
+Cushetunk Climb 4037.0247448.014
+Uplands Trek 4030.9907452.794
+
+
+This is the right answer? I'm not getting.
+data cache;
+infile 'c:\books\learning\geocaching.txt' pad;
+input 
+@1 GeoName $20.
+@21 LongDeg 2.
+@23 LongMin 6.
+@29 LatDeg 2.
+@31 LatMin 6.;
+run;
+
+*###############################################################################;
+
+*Q10. You are given a text file called Stockprices.txt containing information on the purchase and
+sale of stocks. Use formatted input.
+Compute several new variables as follows:Compute several new variables as follows:
+Variable Description Computation
+TotalPur Total purchase price Number times PurPrice
+TotalSell Total selling price Number times SellPrice
+Profit Profit TotalSell minus TotalPur
+Print out the contents of this data set using PROC PRINT;
+
+Data Stock;
+infile '/home/u60674716/Datasets/Roncody_dataset/stockprices.txt';
+input @1 stock $4. @5 purdate mmddyy10. @16 purprice dollar4.1 @22 number 3. @25selldate mmddyy10. @36sellprice dollar4.1;
+format purdate mmddyy10. purprice dollar4.1 selldate mmddyy10. sellprice dollar4.1;
+TotalPur = Total purchase price Number times PurPrice
+run;
+
+
+
+
+
