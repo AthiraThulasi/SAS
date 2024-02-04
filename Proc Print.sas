@@ -8,7 +8,7 @@ CODE - 1 PROC PRINT
 
 data blood;
 infile"/home/u60674716/Datasets/Roncody_dataset/blood.txt" ;
-input patient_id gender$ blood_type$ age_group$ rbc cholesterol;
+input patient_id gender$ blood_type$ age_group$ wbc rbc cholesterol;
 run;
 
 Title "Blood data";
@@ -23,7 +23,7 @@ CODE 2 - VAR - To order the variables in listing - Variables will be listed acco
 
 data blood;
 infile"/home/u60674716/Datasets/Roncody_dataset/blood.txt" ;
-input patient_id gender$ blood_type$ age_group$ rbc cholesterol;
+input patient_id gender$ blood_type$ age_group$ wbc rbc cholesterol;
 run;
 
 Title "Print using VAR statement";
@@ -49,7 +49,7 @@ CODE 4 - BY - To group variables - Variables needs to be SORTED before grouping
 ----------------------------------------------------------------------------------------------;
 data blood;
 infile"/home/u60674716/Datasets/Roncody_dataset/blood.txt" ;
-input patient_id gender$ blood_type$ age_group$ rbc cholesterol;
+input patient_id gender$ blood_type$ age_group$ wbc rbc cholesterol;
 run;
 
 *Multi - Level Sort - PROC SORT statements sort data by GENDER and, within each GENDER Age_group is sorted
@@ -187,7 +187,7 @@ CODE 9 - Controlling the Observations That Appear in Listing (Controlling the va
 
 data blood;
 infile"/home/u60674716/Datasets/Roncody_dataset/blood.txt" ;
-input patient_id gender$ blood_type$ age_group$ rbc cholesterol;
+input patient_id gender$ blood_type$ age_group$ wbc rbc cholesterol;
 run;
 
 Title "Sort age and age_group ";
@@ -212,9 +212,8 @@ CODE 9 - Adding the Number of Observations in Listing
 -----------------------------------------------------------------------------------------------------------------------------;
 data blood;
 infile"/home/u60674716/Datasets/Roncody_dataset/blood.txt" ;
-input patient_id gender$ blood_type$ age_group$ rbc cholesterol;
+input patient_id gender$ blood_type$ age_group$ wbc rbc cholesterol;
 run;
-
 Title "Sort age and age_group ";
 Proc sort data = blood out = sorted_blood;
 by gender age_group;
@@ -263,12 +262,11 @@ CODE 12 - nobs - To remove the default obs column from the output Data Set
 ----------------------------------------------------------------------------------------------------------------------------;
 data blood;
 infile"/home/u60674716/Datasets/Roncody_dataset/blood.txt" ;
-input patient_id gender$ blood_type$ age_group$ rbc cholesterol;
+input patient_id gender$ blood_type$ age_group$ wbc rbc cholesterol;
 run;
 
 proc print data =Blood noobs;
 run;
-
 
 *----------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------
@@ -279,10 +277,10 @@ CODE 13 - HEADING - To present the column headings in vertical in output (Defaul
 ----------------------------------------------------------------------------------------------------------------------------;
 data blood;
 infile"/home/u60674716/Datasets/Roncody_dataset/blood.txt" ;
-input patient_id gender$ blood_type$ age_group$ rbc cholesterol;
+input patient_id gender$ blood_type$ age_group$ wbc rbc cholesterol;
 run;
 
-proc print data =Blood heading=vertical;
+proc print data =Blood heading=vertical  ;
 run;
 
 
