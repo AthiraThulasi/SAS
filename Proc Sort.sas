@@ -70,7 +70,10 @@ run;
 proc print data = sorted_blood;
 run;
 
-*OUTPUT - Here wbc is sorted in descending order and rbc and cholesterol 
+*OUTPUT - The first level of sorting is: DESCENDING wbc
+
+Within the same value for WBC rows then get sorted by ascending rbc and then within the same value of rbc 
+they get sorted by ascending cholesterol.
 
 *----------------------------------------------------------------------------------------
 *CODE - 5 
@@ -201,3 +204,127 @@ run;
  by center;
  pageby center;
  run;
+ 
+ 
+
+*------------------------------------------------------------------------------------------
+Dataset - EXAM
+------------------------------------------------------------------------------------------;
+Data Exam;
+Input Subject $ Student $ Results;
+Datalines;
+Math Mary 78
+Math John 67
+Math Tom 98
+Math Chris 56
+Math Amy 89
+English Mary 74
+English John 79
+English Tom 88
+English Chris 92
+English Amy 45
+History Mary 32
+History John 96
+History Tom 55
+History Chris 67
+History Amy 86
+;
+Run;
+*-----------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------
+CODE - 10 - FLAGGING EXTREME VALUES - To identify the best and worst mark for each subject
+------------------------------------------------------------------------------------------;
+Proc Sort Data=Exam out = exam_new;
+By Subject Results;
+Run;
+*-------------------------------------------------------------------------------------------
+TO FIND EXTREME VALUES - "FIRST" - "LAST"
+--------------------------------------------------------------------------------------------
+The variable "i" flags the students with the highest and lowest results.
+The students with the highest results are all flagged as "2".
+The students with the lowest results are all flagged as "1".
+-------------------------------------------------------------------------------------------;
+Data Exam2;
+Set exam_new;
+By Subject Results;
+if first.subject then i=1;
+else if last.subject then i=2;
+if i in(1,2); *Subsetting to display only the lowest & highest;
+Run;
+*-----------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------
+*-------------------------------------------------------------------------------------------
+CODE - 11 - RAN the code 10 with "WHERE" - ERROR MESSAGE - Variable i is not on file WORK.EXAM_NEW.
+-------------------------------------------------------------------------------------------;
+Data Exam2;        
+Set exam_new;
+By Subject Results;
+if first.subject then i=1;
+else if last.subject then i=2;
+where i in(1,2);
+run;
+*-------------------------------------------------
+POINT TO NOTE
+--------------------------------------------------
+WHERE statement subsets the data set before the data is read into the PDV.
+As a result, it cannot be used on variables that don't already exist in the input data set
+*------------------------------------------------------------------------------------------
+*-----------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------
+Dataset - FISH - Identify the heaviest fish from each species using the technique covered in this session.
+------------------------------------------------------------------------------------------
+CODE - 12 - FISH
+------------------------------------------------------------------------------------------;
+Data fish;
+set sashelp.fish;
+run;
+
+proc sort data = fish out = sor_fish;
+by Species Weight;
+run;
+
+Data heaviest_fish;
+set work.sor_fish;
+By Species Weight; *"BY" variables used in SORT should be added in Data step ;
+if first.Species then i=1;
+else if last.Species then i = 2;
+if i in (1,2);
+run;
+
+proc print data = heaviest_fish;
+run;
+*------------------------------------------------------------------------------------------
+*-----------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------
+Dataset - CARS - Identify the most and least powerful cars (HORSEPOWER) from each car maker (MAKE).
+------------------------------------------------------------------------------------------
+CODE - 12 - CARS
+------------------------------------------------------------------------------------------;
+Data cars;
+set sashelp.cars;
+run;
+
+proc sort data =cars  out = sor_cars;
+by Make Horsepower;
+run;
+
+Data hp_cars;
+set work.sor_cars;
+By Make Horsepower; *"BY" variables used in SORT should be added in Data step ;
+if first.Make then i=1;
+else if last.Make then i = 2;
+if i in (1,2);
+run;
+
+proc print data = hp_cars;
+run;
+
+
+
+
+
+
+
+
+
