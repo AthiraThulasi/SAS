@@ -1,5 +1,5 @@
 *==================================================================================
-                                WHERE STATEMENT
+                               WHERE STATEMENT - Subset the data
 ===================================================================================
 WHERE statement can be used to subset a data set (similar to the IF statement)
 
