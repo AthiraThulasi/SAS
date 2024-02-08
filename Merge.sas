@@ -1,9 +1,9 @@
 *==========================================================================================
 							MERGE 
 ===========================================================================================
-Merge multiple  datasets with common variable(merging variable)
+Merge multiple  datasets using common variable(merging variable)
 
-STEP1 : SORT each dataset separately using BY ( common variable/ merging variable)
+STEP1 : SORT each dataset separately using "BY" ( common variable/ merging variable)
 STEP2 : MERGE 2 datasets and use BY Statement with merging/common variable.
 --------------------------------------------------------------------------------------------
 The MERGE statement tells SAS to merge the data sets.
