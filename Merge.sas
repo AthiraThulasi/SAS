@@ -464,8 +464,8 @@ run;
 Data Drop_All;
 Merge sort_all(in = a) sort_drop(in = b);
 by PID;
-if a=1 then i = 'current patient';
-else if b=1 then i= "Dropout patient"
+if a=b then i = 'dropout patient';
+else if a=1 then i= "current patient";
 run; 
 
 proc print data = Drop_All;
