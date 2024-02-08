@@ -80,45 +80,6 @@ run;
 *----------------------------------------------------------
 -----------------------------------------------------------
 -----------------------------------------------------------
-CODE 2 -  MERGE - ONE to ONE 
------------------------------------------------------------
-The POPULATION data set contains the population information related to 8 metropolitan cities across North America.
-The UBER data set contains the number of Uber drivers in each of the metropolitan cities.
-Merge the POPULATION and UBER data set and calculate the Driver to Population ratio:
-Ratio = Number of Uber driver / Population.
-Which city has the highest Uber driver to population ratio?
------------------------------------------------------------;
-Data Population;
-Input Country $ City: $30. Population;
-Datalines;
-Canada Toronto 6000000
-Canada Montreal 4000000
-Canada Vancouver 2400000
-US Chicago 2700000
-US New_York 8400000
-US Los_Angeles 3800000
-Mexico Mexico_City 8500000
-Mexico Cancun 620000
-;
-Run;
-
-Data Uber;
-Input Country $ Cities: $30. NumDriver;
-Datalines;
-US Chicago 20000
-US New_York 14000
-US Los_Angeles 16000
-Canada Toronto 13000
-Canada Montreal 5000
-Mexico Mexico_City 20000
-Mexico Cancun 11000
-Canada Vancouver 7000
-;
-Run;
-
-*----------------------------------------------------------
------------------------------------------------------------
------------------------------------------------------------
 DATASET -  PARENT & FAMILY (DEALING WITH UNMATCHED OBSERVATIONS)
 -----------------------------------------------------------;
 DATA parent; 
@@ -378,7 +339,7 @@ proc sort data = uber out = uber_sort;
 by country;
 run;
 
-Data ub_pop;
+Data ub_pop; *renaming city as cities;
 merge  uber_sort pop_sort(rename=(city = cities));
 by country;
 Ratio = (Numdriver) / (Population);
@@ -388,7 +349,7 @@ proc print data = ub_pop;
 run;
 
 
-Data ub_pop2;
+Data ub_pop2; *renaming cities as city;
 merge pop_sort uber_sort (rename=(cities = city));
 by country;
 Ratio = (Numdriver) / (Population);
@@ -503,7 +464,7 @@ run;
 Data Drop_All;
 Merge sort_all(in = a) sort_drop(in = b);
 by PID;
-else if a=1 then i = 'current patient';
+if a=1 then i = 'current patient';
 else if b=1 then i= "Dropout patient"
 run; 
 
