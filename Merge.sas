@@ -18,11 +18,11 @@ ONE - to - MANY MERGE
 Each observation in the primary dataset can have multiple matching observations in the secondary dataset based on a common identifier.
 However, each observation in the secondary dataset has only one corresponding match in the primary dataset.
 
-MANY - tO - MANY MERGE 
+MANY - to - MANY MERGE 
 Each observation in the primary dataset can have multiple corresponding matches in the secondary dataset.
 Simultaneously, each observation in the secondary dataset can have multiple corresponding matches in the primary dataset.
 -----------------------------------------------------------------------------------------------
-Dataset Profile and Exam
+Dataset - Profile and Exam
 -----------------------------------------------------------------------------------------------;
 Data Profile;
 Input Student $ Gender $ Grade;
@@ -57,7 +57,7 @@ SID0010 66
 Run;
 *----------------------------------------------------------
 -----------------------------------------------------------
-CODE 1 -  MERGE - ONE to ONE MERGE
+CODE 1  - ONE to ONE MERGE
 -----------------------------------------------------------
 Step 1: SORT both the datasets;
 
@@ -238,7 +238,7 @@ run;
 *-------------------------------------------------------------------
 --------------------------------------------------------------------
 --------------------------------------------------------------------
-CODE 3 -  MERGE - MANY to MANY MERGE is usually performed using SQL
+CODE 3 - MANY to MANY MERGE - is usually performed using SQL
 ---------------------------------------------------------------------;
 data Adverse_Event ;
 input ptnum $ 1-3 @5 date date9. event $ 15-35;
