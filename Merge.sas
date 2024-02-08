@@ -18,11 +18,11 @@ ONE - to - MANY MERGE
 Each observation in the primary dataset can have multiple matching observations in the secondary dataset based on a common identifier.
 However, each observation in the secondary dataset has only one corresponding match in the primary dataset.
 
-MANY - to - MANY MERGE 
+MANY - tO - MANY MERGE 
 Each observation in the primary dataset can have multiple corresponding matches in the secondary dataset.
 Simultaneously, each observation in the secondary dataset can have multiple corresponding matches in the primary dataset.
 -----------------------------------------------------------------------------------------------
-Dataset - Profile and Exam
+Dataset Profile and Exam
 -----------------------------------------------------------------------------------------------;
 Data Profile;
 Input Student $ Gender $ Grade;
@@ -57,7 +57,7 @@ SID0010 66
 Run;
 *----------------------------------------------------------
 -----------------------------------------------------------
-CODE 1  - ONE to ONE MERGE
+CODE 1 -  MERGE - ONE to ONE MERGE
 -----------------------------------------------------------
 Step 1: SORT both the datasets;
 
@@ -76,6 +76,45 @@ Run;
 
 proc print data = Combined;
 run;
+
+*----------------------------------------------------------
+-----------------------------------------------------------
+-----------------------------------------------------------
+CODE 2 -  MERGE - ONE to ONE 
+-----------------------------------------------------------
+The POPULATION data set contains the population information related to 8 metropolitan cities across North America.
+The UBER data set contains the number of Uber drivers in each of the metropolitan cities.
+Merge the POPULATION and UBER data set and calculate the Driver to Population ratio:
+Ratio = Number of Uber driver / Population.
+Which city has the highest Uber driver to population ratio?
+-----------------------------------------------------------;
+Data Population;
+Input Country $ City: $30. Population;
+Datalines;
+Canada Toronto 6000000
+Canada Montreal 4000000
+Canada Vancouver 2400000
+US Chicago 2700000
+US New_York 8400000
+US Los_Angeles 3800000
+Mexico Mexico_City 8500000
+Mexico Cancun 620000
+;
+Run;
+
+Data Uber;
+Input Country $ Cities: $30. NumDriver;
+Datalines;
+US Chicago 20000
+US New_York 14000
+US Los_Angeles 16000
+Canada Toronto 13000
+Canada Montreal 5000
+Mexico Mexico_City 20000
+Mexico Cancun 11000
+Canada Vancouver 7000
+;
+Run;
 
 *----------------------------------------------------------
 -----------------------------------------------------------
@@ -125,7 +164,7 @@ when the observations are contributed by only family, they are flagged as "FAMIL
 DATA fam ; 
 MERGE parent_sor(in=a) fam_sort(in=b); 
 BY famid;  
-If a=1 and b=1 then Source = 'MATCH';
+If a=1 and b=1 then Source = 'MATCH'; *OR a = b;
 else if a=1 then Source='Parent';
 else if b=1 then Source='family';
 run;
@@ -180,7 +219,39 @@ DATA fam2 ;
   BY famid; 
   if b  ;
   run; 
+*----------------------------------------------------------
+-----------------------------------------------------------
+-----------------------------------------------------------
+Creating different datasets for each condition 
+-----------------------------------------------------------;
 
+Data common not_comn in_a in_b a_notb b_nota;
+MERGE parent_sor(in=a) fam_sort(in=b); 
+BY famid; 
+if a=b then output common;
+if a ne b then output not_comn;
+if a then output in_a;
+if b then output in_b;
+if a and not b then output a_notb;
+if b and not a then output b_nota;
+run;
+
+*----------------------------------------------------------
+-----------------------------------------------------------
+-----------------------------------------------------------
+Creating different variables to store different conditions - where each satisfied condition is marked "Y"
+-----------------------------------------------------------;
+
+Data par_fam;
+MERGE parent_sor(in=a) fam_sort(in=b); 
+BY famid; 
+if a=b then comn = "Y";
+if a ne b then not_comn = "Y";
+if a then in_a = "Y";
+if b then in_b = "Y";
+if a and not b then a_notb = "Y";
+if b and not a then b_nota = "Y";
+run;
 
 *----------------------------------------------------------
 -----------------------------------------------------------
@@ -238,7 +309,7 @@ run;
 *-------------------------------------------------------------------
 --------------------------------------------------------------------
 --------------------------------------------------------------------
-CODE 3 - MANY to MANY MERGE - is usually performed using SQL
+CODE 3 -  MERGE - MANY to MANY MERGE is usually performed using SQL
 ---------------------------------------------------------------------;
 data Adverse_Event ;
 input ptnum $ 1-3 @5 date date9. event $ 15-35;
@@ -278,10 +349,14 @@ proc sort data = Medication out = med_sor;
 by ptnum date;
 run;
 
+*Here ptnum and date are the merging variables. 
+For many to many merge, since the "ptnum" column in both the datasets has same values, 
+SAS will give error - "more than one dataset with repeats of "by" values, and there will be descrepencies while merging .
+To avoid this use more than one merging variable;
 
 data adv_med;
 merge ad_sor med_sor;
-by ptnum date;
+by ptnum date ; 
 run;
 
 title1 "Merge using the MERGE statement ";
@@ -339,7 +414,7 @@ proc sort data = uber out = uber_sort;
 by country;
 run;
 
-Data ub_pop; *renaming city as cities;
+Data ub_pop;
 merge  uber_sort pop_sort(rename=(city = cities));
 by country;
 Ratio = (Numdriver) / (Population);
@@ -349,7 +424,7 @@ proc print data = ub_pop;
 run;
 
 
-Data ub_pop2; *renaming cities as city;
+Data ub_pop2;
 merge pop_sort uber_sort (rename=(cities = city));
 by country;
 Ratio = (Numdriver) / (Population);
@@ -470,3 +545,4 @@ run;
 
 proc print data = Drop_All;
 run;
+ 
