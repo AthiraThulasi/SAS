@@ -5,9 +5,9 @@ WHERE statement can be used to subset a data set (similar to the IF statement)
 
 Variables used in a WHERE statement must all come from a SAS data set. 
 
-Variables that are
+Variables that cannot be used in WHERE statement
 (i) created by reading raw data or 
-(ii) created from an assignment statement may not be used in WHERE statement.
+(ii) created from an assignment statement.
 
 WHERE statement subsets the data set before the data is read into the PDV.
 As a result, it cannot be used on variables that don't already exist in the input data set
