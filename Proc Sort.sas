@@ -40,7 +40,8 @@ PROC SORT DATA = blood OUT = sorted_blood;
 BY wbc rbc;
 run;
 
-*OUTPUT - All the missing values will be listed first followed by wbc and rbc values in the ascending order
+*OUTPUT - All the missing values will be listed first followed by wbc values in the ascending order 
+
 
 -----------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------
@@ -72,12 +73,12 @@ run;
 
 *OUTPUT - The first level of sorting is: DESCENDING wbc
 
-Within the same value for WBC rows then get sorted by ascending rbc and then within the same value of rbc 
-they get sorted by ascending cholesterol.
+Within the same value for WBC rows, rbc get sorted by ascending and then within the same value of rbc 
+cholesterol get sorted by ascending .
 
 *----------------------------------------------------------------------------------------
-*CODE - 5 
 -----------------------------------------------------------------------------------------
+CODE - 5 
 -----------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------;
 data Employees;
@@ -100,10 +101,8 @@ run;
 
 *----------------------------------------------------------------------------------------
 Character sorting
------------------------------------------------------------------------------------------;
-
-
-*Character sorting: char sorting is controlled by ASCII values.  
+-----------------------------------------------------------------------------------------
+Character sorting: char sorting is controlled by ASCII values.  
 Upper case A, B, ---- Z 
 SAS ASCII Values A=40 Z=66. 
 Lower case a, b, c, ---- z, 
@@ -116,10 +115,9 @@ A B C D E F G H I J K L M N O P Q R S T U V W X Y Z[ \] ˆ_
 a b c d e f g h i j k l m n o p q r s t u v w x y z { } ~;
 *-----------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------
-*----------------------------------------------------------------------------------------
-*Character sorting - CODE - 6
+CODE - 6 - Character sorting 
+-----------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------;
-
 data labs;
 input pid$;
 cards;
@@ -133,9 +131,11 @@ a
 $
 ;
 run;
+
 proc sort data =labs;
 by  pid;
 run;
+
 proc print data=labs;
 run;
 
@@ -182,6 +182,7 @@ cards;
 178 care  1997    87
 ;
 run;
+
 proc print data=clinical;
 run;
 
@@ -205,8 +206,6 @@ run;
  pageby center;
  run;
  
- 
-
 *------------------------------------------------------------------------------------------
 Dataset - EXAM
 ------------------------------------------------------------------------------------------;
@@ -239,7 +238,7 @@ Proc Sort Data=Exam out = exam_new;
 By Subject Results;
 Run;
 *-------------------------------------------------------------------------------------------
-TO FIND EXTREME VALUES - "FIRST" - "LAST"
+TO FIND EXTREME VALUES - Use "FIRST" & "LAST"
 --------------------------------------------------------------------------------------------
 The variable "i" flags the students with the highest and lowest results.
 The students with the highest results are all flagged as "2".
@@ -255,7 +254,7 @@ Run;
 *-----------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------
 *-------------------------------------------------------------------------------------------
-CODE - 11 - RAN the code 10 with "WHERE" - ERROR MESSAGE - Variable i is not on file WORK.EXAM_NEW.
+CODE - 11 - RAN the above code using "WHERE" for subsetting  - ERROR MESSAGE - Variable i is not on file WORK.EXAM_NEW.
 -------------------------------------------------------------------------------------------;
 Data Exam2;        
 Set exam_new;
@@ -264,7 +263,7 @@ if first.subject then i=1;
 else if last.subject then i=2;
 where i in(1,2);
 run;
-*-------------------------------------------------
+*----------------------------------------------------------------------------------------------
 POINT TO NOTE
 --------------------------------------------------
 WHERE statement subsets the data set before the data is read into the PDV.
@@ -272,7 +271,7 @@ As a result, it cannot be used on variables that don't already exist in the inpu
 *------------------------------------------------------------------------------------------
 *-----------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------
-Dataset - FISH - Identify the heaviest fish from each species using the technique covered in this session.
+Dataset - FISH - Identify the heaviest fish from each species?
 ------------------------------------------------------------------------------------------
 CODE - 12 - FISH
 ------------------------------------------------------------------------------------------;
