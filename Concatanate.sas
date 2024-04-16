@@ -1,5 +1,5 @@
 *---------------------------------------------------------------------------
-						CONCATANATE - combine data sets 
+CONCATANATE - combine data sets 
 ----------------------------------------------------------------------------			
 Following are used for concatenation
 
